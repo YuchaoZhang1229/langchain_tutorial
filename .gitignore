@@ -27,7 +27,7 @@ env/
 ENV/
 
 # ===================== IDE / 编辑器 =====================
-.idea/          # PyCharm
+.idea/
 .vscode/
 *.swp
 *.swo
