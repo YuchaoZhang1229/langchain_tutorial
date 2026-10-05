@@ -1,0 +1,29 @@
+[project]
+name = "langchain-tutorial"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.142.2",
+    "langchain>=1.4.3",
+    "langchain-anthropic>=1.7.5",
+    "langchain-classic>=1.0.8",
+    "langchain-deepseek>=1.1.1",
+    "langchain-openai>=1.6.6",
+    "langserve>=0.3.3",
+    "notebook>=7.6.3",
+    "openai>=3.22.1",
+    "sse-starlette>=3.5.0",
+    "uvicorn>=0.54.0",
+]
+
+[project.scripts]
+langchain-tutorial = "langchain_tutorial:main"
+
+[[tool.uv.index]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+
+[build-system]
+requires = ["uv_build>=0.12.10,<0.13.0"]
+build-backend = "uv_build"
