@@ -4,6 +4,9 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.12"
 dependencies = [
+    "chromadb>=1.5.9",
+    "dashscope>=1.27.7",
+    "docx2txt>=0.9",
     "fastapi>=0.142.2",
     "langchain>=1.4.3",
     "langchain-anthropic>=1.7.5",
