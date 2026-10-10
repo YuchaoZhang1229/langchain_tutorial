@@ -8,6 +8,7 @@ dependencies = [
     "dashscope>=1.27.7",
     "docx2txt>=0.9",
     "fastapi>=0.142.2",
+    "gradio==5.49.1",
     "langchain>=1.4.3",
     "langchain-anthropic>=1.7.5",
     "langchain-classic>=1.0.8",
