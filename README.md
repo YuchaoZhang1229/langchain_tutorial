@@ -27,11 +27,9 @@ langchain_tutorial/
 │   ├── 05-Deploy部署.ipynb             # 部署
 │   └── deploy_service.py               # 翻译服务部署实战
 ├── 02-Runnable协议/
-│   ├── 00-invoke-stream-batch.ipynb    # 三种调用方式
 │   └── 01-Chain链式调用.ipynb          # LCEL 链式调用
 ├── 03-记忆与历史/
 │   ├── 01-Memory.ipynb                 # 消息历史（内存）
-│   └── 02-Redis持久化记忆.ipynb        # Redis 持久化记忆
 ├── 04-检索增强RAG/
 │   └── 01-RAG.ipynb                    # 文档加载/切分/向量/检索
 ├── 05-智能体Agent/
