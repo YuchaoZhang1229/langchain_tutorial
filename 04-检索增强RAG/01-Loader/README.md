@@ -23,7 +23,6 @@
 - 安装 `uv add mineru-open-sdk langchain-mineru`
 - 设置环境变量 `MINERU_TOKEN`
 
-
 ### 最佳实践
 #### 1. 清洗与预处理
 - 保留标题层级结构（H1, H2, H3...）→ 后续分块的关键依据 
