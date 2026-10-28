@@ -57,13 +57,24 @@ Milvus有一个web控制台叫attu，端口是3000，在浏览器输入地址：
 |               |`description`|字段说明|
 | 主键            |`is_primary`|是否为主键|
 |               |`auto_id`|是否由 Milvus 自动生成主键|
-| 字符串 `VARCHAR` |`max_length`|字符串字段的最大长度|
+| 字符串 |`max_length`|字符串字段的最大长度|
 | 向量            |`dim`|向量的维度|
-| 数组   `ARRAY`  |`element_type`|数组中元素的数据类型|
+| 数组    |`element_type`|数组中元素的数据类型|
 |               |`max_capacity`|数组最多可以保存的元素数量|
 
+常见数据类型：
+- `VARCHAR`：字符串
+- `INT32`、`INT64`：数字
+- `ARRAY`：数组，元素任意
+- `FLOAT_VECTOR`： 稠密向量
+- `SPARSE_FLOAT_VECTOR`： 稀疏向量
+
+
+
 在实际开发中，我们要根据文档的数据特点来选择合适的字段类型，例如官网给出的示例：
+
 <img alt="img.png" src="../../../material/png/Milvus_Schema.png" width="800"/>
+
 
 
 #### 3.3 Index
