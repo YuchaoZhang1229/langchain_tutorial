@@ -23,13 +23,14 @@ docker compose up -d
 ```
 
 Milvus有一个web控制台叫attu，端口是3000，在浏览器输入地址：http://locahost:3000 即可访问：
-<img alt="Milvus.png" src="../../../material/png/Milvus.png"/>
+
+<img alt="Milvus.png" src="../../../material/png/Milvus.png" width="800">
 
 首次访问，需要注册一个管理员的用户名和密码，密码必须8位以上，且必须有大写、小写、数字、下划线中的3个类型。例如：admin/admin_123
 
 注册成功并登录后，可以看到Milvus信息：
 
-<img alt="img.png" src="../../../material/png/Milvus2.png"/>
+<img alt="Milvus2.png" src="../../../material/png/Milvus2.png" width="800"/>
 
 ### 三、Milvus 基础概念
 #### 3.1 Collection、Field、Entity
@@ -42,7 +43,7 @@ Milvus有一个web控制台叫attu，端口是3000，在浏览器输入地址：
 
 下图展示了一个包含 8 个 Field 和 6 个 Entity 的 Collection：
 
-<img alt="img.png" src="../../../material/png/Milvus_Collection.png"/>
+<img alt="Milvus_Collection.png" src="../../../material/png/Milvus_Collection.png" width="800"/>
 
 #### 3.2 Schema
 **Schema** 用来定义 Collection 中包含哪些 Field，以及每个 Field 的名称、数据类型和相关属性
@@ -178,8 +179,7 @@ for i, chunk in enumerate(chunks):
 #### 4.3 初始化向量模型
 ```python
 from langchain_ollama import OllamaEmbeddings
-
-# 1.初始化向量模型，可以把文档转稠密向量
+# 初始化向量模型，可以把文档转稠密向量
 embeddings = OllamaEmbeddings(
     model="qwen3-embedding:0.6b",  # 性价比高的模型
     dimensions=1024  # 可选：减少维度以节省存储
