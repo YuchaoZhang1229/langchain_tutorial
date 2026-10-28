@@ -63,7 +63,7 @@ Milvus有一个web控制台叫attu，端口是3000，在浏览器输入地址：
 |               |`max_capacity`|数组最多可以保存的元素数量|
 
 在实际开发中，我们要根据文档的数据特点来选择合适的字段类型，例如官网给出的示例：
-<img alt="img.png" src="../../../material/png/Milvus_Schema.png"/>
+<img alt="img.png" src="../../../material/png/Milvus_Schema.png" width="800"/>
 
 
 #### 3.3 Index
