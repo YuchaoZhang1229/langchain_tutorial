@@ -27,7 +27,7 @@ vector_store.delete(ids)
 - 存储文档时，`VectorStore` 会自动把文档转向量，写入向量数据库
 - 检索文档时，`VectorStore` 会自动把用户问题转向量，再去向量数据库搜索
 
-![VectorStore.png](../material/png/VectorStore.png)
+![VectorStore.png](../../material/png/VectorStore.png)
 
 ### 常见向量数据库
 LangChain支持多种向量库：
@@ -52,4 +52,4 @@ LangChain支持多种向量库：
 
 
 向量数据库市场格局：
-![img.png](../material/png/向量数据库市场格局.png)
+![img.png](../../material/png/向量数据库市场格局.png)
