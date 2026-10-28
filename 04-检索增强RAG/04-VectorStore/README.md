@@ -3,11 +3,10 @@
 
 ### 为什么要向量数据库？
 向量数据库用于存储和检索向量化后的文档
-- 存储：向量 + 原文 + 元数据
-- 检索：构建高效的检索数据结构
+- **存储**：向量 + 原文 + 元数据
+- **检索**：构建高效的检索数据结构
 
 ### 向量数据库方法
-![VectorStore.png](../material/png/VectorStore.png)
 LangChain提供了统一的 `VectorStore` 接口，使你可以用统一的方式调用任意向量库：
 - `add_documents`: 添加文档到向量库（不用自己做文本向量化，只要提供好向量模型即可）
 - `delete`: 根据id删除某个文档
@@ -18,6 +17,8 @@ LangChain提供了统一的 `VectorStore` 接口，使你可以用统一的方�
 也就是说，LangChain将`向量模型`与`向量数据库`进行封装
 - 存储文档时，`VectorStore` 会自动把文档转向量，写入向量数据库
 - 检索文档时，`VectorStore` 会自动把用户问题转向量，再去向量数据库搜索
+
+![VectorStore.png](../material/png/VectorStore.png)
 
 ### 常见向量数据库
 LangChain支持多种向量库：
