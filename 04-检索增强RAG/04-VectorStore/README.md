@@ -8,9 +8,18 @@
 
 ### 向量数据库方法
 LangChain提供了统一的 `VectorStore` 接口，使你可以用统一的方式调用任意向量库：
-- `add_documents`: 添加文档到向量库（不用自己做文本向量化，只要提供好向量模型即可）
-- `delete`: 根据id删除某个文档
+- `add_documents`: 接收`list[Document]`，可以批量添加文档
+- `delete`: 接收`list[str]`，也就是 id 集合，可以根据 id 批量删除文档
 - `similarity_search`: 基于相似度检索与用户问题有关的文档
+
+```python
+# 保存文档到向量数据库
+ids = vector_store.add_documents(docs)
+print(ids)
+
+# 删除旧文档
+vector_store.delete(ids)
+```
 
 <br>
 
