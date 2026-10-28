@@ -75,11 +75,7 @@ Milvus有一个web控制台叫attu，端口是3000，在浏览器输入地址：
 
 <img alt="img.png" src="../../../material/png/Milvus_Schema.png" width="800"/>
 
-
-
 #### 3.3 Index
-
-
 `Index`，也就是索引，用来提高数据检索速度。根据字段的数据类型不同，Milvus 中常用的索引可以分为三类：
 
 | 数据类型 | 保存的内容   | 常见索引 | 用途 |
