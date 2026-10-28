@@ -1,6 +1,6 @@
 credential:
   dashscope_apikey:
-    apikey: sk-ws-H.PHILHHI.uRVO.MEUCICK0541p_7SEzjQe3GAigxD01XEmQ5sQcbcVPdW3tB7GAiEA7pFEfbWGAVTpEb5QtxeQGFLVt-7syV1rDo-roIhTB6s
+    apikey: sk-xxx
 function:
   rerank:
     model:
