@@ -1,6 +1,6 @@
 ## RAG 基础认知
 
-### 1. RAG是什么？
+### 一、RAG是什么？
 RAG（Retrieval-Augmented Generation），即检索增强生成
 - **检索（Retrieval）**：从知识库中检索相关文档
 - **增强（Augmented）**：将检索结果拼接到 Prompt 中，增强上下文
@@ -8,7 +8,7 @@ RAG（Retrieval-Augmented Generation），即检索增强生成
 
 >RAG最早提出来是用来解决什么问题？     `实现多轮对话的记忆管理`
 
-### 2. 为什么需要 RAG
+### 二、为什么需要 RAG
 主要是因为大模型本身存在以下局限性
 
 | 问题 | 说明 | RAG 如何解决 |
@@ -21,18 +21,33 @@ RAG（Retrieval-Augmented Generation），即检索增强生成
 | 更新成本高 | 微调/重新训练模型代价大 | 只需更新知识库，无需重新训练 |
 
 
-### 3. RAG 完整流程
+### 三、RAG 完整流程
 - 离线构建流程：文档清洗 -> 文档加载 -> 文档切块 -> 文档向量化 -> 向量数据库
 - 在线查询流程：用户问题 -> 问题向量化 -> 向量检索 -> 拼接提示词 -> 答案生成
 
-![RAG完整流程.png](material/RAG完整流程.png)
-
-### 4. RAG 分类
-
-### 5. RAG 适用场景
+![RAG完整流程.png](material/png/RAG完整流程.png)
 
 
-### 6. 向量检索技术
+#### 1. 离线构建流程核心组件
+| 组件 | 作用 | 常用选择 |
+| :--- | :--- | :--- |
+| Document Loader | 加载原始文档 | MinerU, Docling |
+| Text Splitter | 切分文档为chunk | RecursiveCharacterTextSplitter |
+| Embeddings | 文本转向量 | DashScopeEmbeddings , BGE-M3, qwen3-embedding:0.6b |
+| Vector Store | 存储和检索向量 | InMemory(开发), Chroma(中小), Milvus(大规模) |
+
+关键参数建议：
+- `chunk_size`: 建议 256~1024，取决于文档类型和模型上下文长度
+- `chunk_overlap`: 建议 chunk_size 的 10%~20%
+- `k (检索数量)`: 建议 3~10，太少可能遗漏，太多可能引入噪声
+
+
+### 四、RAG 分类
+
+### 五、RAG 适用场景
+
+
+### 六、向量检索技术
 向量检索是判断文本语义相似度的方法
 1. 利用**向量模型（Embedding）**将**文本**转换为**向量**
 2. 通过计算**向量相似度**来判断语义相似度，向量越相似，语义越接近
