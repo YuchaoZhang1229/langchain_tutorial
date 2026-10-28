@@ -14,7 +14,7 @@ Milvus 提供三种部署模式，覆盖广泛的数据规模——从 Jupyter N
 - `Milvus Distributed` 可部署在 Kubernetes 集群上，采用专为数十亿量级甚至更大规模场景设计的云原生架构。该架构确保了关键组件的冗余性。
 
 
-### 二、Milvus 安装部署
+### 二、Milvus 部署
 本地开发建议使用 `Milvus Standalone` 模式，由于Milvus依赖一些其它服务，因此部署时不仅需要Milvus，还要把依赖服务一起部署。这就需要用到DockerCompose了
 使用 `docker compose` 命令即可一键部署：
 ```
@@ -32,7 +32,7 @@ Milvus有一个web控制台叫attu，端口是3000，在浏览器输入地址：
 <img alt="img.png" src="../../../material/png/Milvus2.png"/>
 
 ### 三、Milvus 基础概念
-#### 1. Collection、Field、Entity
+#### 3.1 Collection、Field、Entity
 
 |Milvus|MySQL|含义|
 |---|---|---|
@@ -44,7 +44,7 @@ Milvus有一个web控制台叫attu，端口是3000，在浏览器输入地址：
 
 <img alt="img.png" src="../../../material/png/Milvus_Collection.png"/>
 
-#### 2. Schema
+#### 3.2 Schema
 **Schema** 用来定义 Collection 中包含哪些 Field，以及每个 Field 的名称、数据类型和相关属性
 
 常见的 Schema 属性可以按使用场景分为以下几类：
@@ -65,7 +65,7 @@ Milvus有一个web控制台叫attu，端口是3000，在浏览器输入地址：
 <img alt="img.png" src="../../../material/png/Milvus_Schema.png"/>
 
 
-#### 3. Index
+#### 3.3 Index
 
 
 `Index`，也就是索引，用来提高数据检索速度。根据字段的数据类型不同，Milvus 中常用的索引可以分为三类：
@@ -86,7 +86,7 @@ Milvus有一个web控制台叫attu，端口是3000，在浏览器输入地址：
 > - 在Milvus中内置了BM25的稀疏向量实现，所以等一会儿我们会直接使用基于BM25的稀疏向量来演示。
 > - 想要了解更多 Milvus 的索引信息，可以参考官方文档：[Index Explained | Milvus Documentation](https://milvus.io/docs/zh/index-explained.md)
 
-#### 4. 向量类型
+#### 3.4 向量类型
 
 稠密向量
 - 学习RAG时，我们使用 Embedding 模型将文本转换成向量，再根据向量相似度检索语义相近的文档。这里生成的就是**稠密向量**
@@ -109,7 +109,7 @@ Milvus有一个web控制台叫attu，端口是3000，在浏览器输入地址：
 > 具体可以参考资料: 
 > - 官方文档：https://milvus.io/docs/zh/v2.6.x/sparse_vector.md
 
-#### 4. 总结
+#### 3.5 总结
 Milvus 是面向向量检索的数据库。除了向量之外，它也可以保存字符串、数字、数组等普通字段，并支持对这些字段创建索引和进行条件过滤。
 
 Milvus的概念与MySQL很相似：
@@ -123,3 +123,65 @@ Milvus的概念与MySQL很相似：
 2. 配置字段索引，也就是 Index；*（MySQL的字段索引）*
 3. 根据 Schema 和 Index 创建 Collection。*（MySQL创建表）*
 
+### 四、准备工作
+正式开始演示Milvus用法之前，我们要做一些准备工作：
+- 安装Milvus依赖
+- 准备文档（文档加载、文档切分）
+- 初始化向量模型
+
+#### 4.1 安装Milvus依赖
+```
+uv add pymilvus
+```
+
+#### 4.2 准备文档
+```python
+# 文档加载
+from langchain_community.document_loaders import TextLoader
+loader = TextLoader("../data/deepseek百度百科.txt", encoding="utf-8")
+docs = loader.load()
+print(f"文档数量{len(docs)}")
+for i, doc in enumerate(docs):
+    print(f"================Doc_{i}.metadata=====================")
+    print("metadata = ", doc.metadata)
+    print(f"================Doc_{i}.page_content=====================")
+    print("page_content = ", doc.page_content)
+
+# 文档切分
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+splitter = RecursiveCharacterTextSplitter(
+    separators=[
+        "\n\n",   # 段落边界，优先保留
+        "\n",     # 换行/小节边界
+        "。",     # 句子结束
+        "！",     # 感叹句结束
+        "？",     # 疑问句结束
+        "；",     # 分句边界
+        "，",     # 短语边界
+        "、",     # 并列词边界
+        " ",      # 中英混排兜底
+        "",       # 最后兜底：按字符切
+    ],
+    chunk_size=100,
+    chunk_overlap=10,
+    is_separator_regex=False,       # 告诉分割器上面包含正则
+)
+chunks = splitter.split_documents(docs)
+print(f"原始文本长度：{len(docs)} 字符")
+print(f"切分后的块数：{len(chunks)} 个块")
+for i, chunk in enumerate(chunks):
+    print(f"--------Chunk {i+1} {len(chunk.page_content)} 个字符---------")
+    print(chunk)
+    print()
+```
+
+#### 4.3 初始化向量模型
+```python
+from langchain_ollama import OllamaEmbeddings
+
+# 1.初始化向量模型，可以把文档转稠密向量
+embeddings = OllamaEmbeddings(
+    model="qwen3-embedding:0.6b",  # 性价比高的模型
+    dimensions=1024  # 可选：减少维度以节省存储
+)
+```
