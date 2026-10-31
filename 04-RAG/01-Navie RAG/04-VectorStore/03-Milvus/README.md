@@ -145,7 +145,7 @@ Milvus的概念与MySQL很相似：
 
 #### 4.1 安装Milvus依赖
 ```
-uv add pymilvus
+uv add pymilvus, langchain-milvus
 ```
 
 #### 4.2 准备文档
