@@ -48,7 +48,6 @@ Agent通过主动规划任务流程，主动使用工具，整合了实时信息
 - 阶段二：Reflection + Long Memory
 - 阶段三：Multi Agent System，MAS
 
-接下来，我们会从最简单的Agent开始学习，逐渐升级到更复杂的Agent结构。
 
 ### 三、快速入门
 
