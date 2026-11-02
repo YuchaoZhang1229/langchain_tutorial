@@ -51,6 +51,8 @@ Agent通过主动规划任务流程，主动使用工具，整合了实时信息
 接下来，我们会从最简单的Agent开始学习，逐渐升级到更复杂的Agent结构。
 
 ### 三、快速入门
+
+#### 3.1 安装依赖
 首先，要使用LangChain必须先安装依赖，命令如下：
 ```bash
 uv add langchain
@@ -69,6 +71,46 @@ uv add langchain-anthropic
 ```
 
 
+#### 3.2 代码示例
+Langchain提供了**create_agent**方法用来快速创建Agent，我们只需要提供好Agent所需的**模型**（Models）、**工具**（Tools）即可。
+
+```python
+# 1.加载环境变量
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# 2.定义工具，基础版，通过注释描述工具
+@tool
+def getWeather(location: str) -> str:
+    """
+    Get the weather in a given location.
+    Args:
+        location: city name or coordinates
+    """
+    return f"Current weather in {location} is sunny"
+    
+
+# 3.定义Agent
+agent = create_agent(
+    "deepseek-chat", # 模型名称（必须是LangChain支持的模型）
+    tools=[getWeather] # 工具集
+)
+
+# 4.调用模型
+print("🚀 正在调用大模型...")
+response = agent.invoke({
+    "messages": [
+        {"role": "user", "content": "杭州今天天气如何?"}
+    ]
+})
+
+# 5.打印结果
+print(response)
+```
+
+具体的工作流程如图：
+<img width=800 alt="Agent工作流程图" align="center" src="../04-RAG/material/png/Agent工作流程图.png">
 
 
 
