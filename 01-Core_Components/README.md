@@ -109,6 +109,8 @@ print(response)
 ```
 
 具体的工作流程如图：
+
+
 <img width=800 alt="Agent工作流程图" align="center" src="../04-RAG/material/png/Agent工作流程图.png">
 
 
