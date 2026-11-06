@@ -15,8 +15,8 @@ MODELSCOPE_CACHE = E:\Development_Tool\modelscope_cache    # ModelScope 缓存�
 ```
 或者在代码中添加
 ```
-os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"                        # Hugging Face 镜像
-os.environ["HF_HOME"] = r"E:\Development_Tool\huggingface_cache"           # Hugging Face 缓存路径
+# os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"                        # Hugging Face 镜像
+# os.environ["HF_HOME"] = r"E:\Development_Tool\huggingface_cache"           # Hugging Face 缓存路径
 os.environ["MINERU_MODEL_SOURCE"] = "modelscope"                           # MinerU 改用 ModelScope 源
 os.environ["MODELSCOPE_CACHE"] = r"E:\Development_Tool\modelscope_cache"   # ModelScope 缓存路径
 ```
