@@ -2,7 +2,7 @@
 
 ### 1. AI 应用的发展过程
 
-<img alt="img_4.png" height="" src="image/AI 应用的发展过程.png" width="600"/>
+<img alt="img_4.png" height="" src="image/AI 应用的发展过程.png" width="600" align="center"/>
 
 
 
@@ -10,5 +10,7 @@
 
 >LangGraph的作用就是在**保持Agent的自主控制程度不变的同时，提高Agent的稳定程度**
 
-<img alt="img.png" src="image/LangGraph的作用.png" width="600"/>
+<img alt="img.png" src="image/LangGraph的作用.png" width="600" align="center"/>
+
+
 
