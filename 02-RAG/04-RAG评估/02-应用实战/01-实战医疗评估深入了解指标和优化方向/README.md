@@ -12,6 +12,11 @@
 
 很多业务场景，如技术文档问答或客服，倾向于优先保证信息不遗漏（高召回率 + 中等精确率）
 
+引入 f1_score 指标，综合评估 Context Recall 和 Context Precision 这两个指标
+$$ f1_score = 2 * \frac{准确率 * 召回率}{准确率 + 召回率}$$
+
+
+
 #### 2. 生成指标
 - Faithfulness
 - Answer Relevance
