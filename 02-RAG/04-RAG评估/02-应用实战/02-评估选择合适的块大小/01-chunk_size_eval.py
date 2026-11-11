@@ -1,16 +1,14 @@
-import os
-
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 from langchain_classic.chains.retrieval import create_retrieval_chain
 
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.vectorstores import FAISS
 from datasets import Dataset
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from ragas import evaluate
-from ragas.embeddings import LangchainEmbeddingsWrapper
 from ragas.llms import LangchainLLMWrapper
+from ragas.embeddings import LangchainEmbeddingsWrapper
 from ragas.metrics import (
     faithfulness,
     answer_relevancy,
@@ -69,7 +67,7 @@ split_docs = text_splitter.split_documents(docs)
 print("分块个数：", len(split_docs))
 
 """ ====================== 3. Vector Store ======================"""
-index_folder_path = "../data/faiss_index"
+index_folder_path = "../data/faiss_index/faiss_index"
 index_name = "c_default_"+str(chunk_size)
 index_file_path = os.path.join(index_folder_path, f"{index_name}.faiss")
 # 检查索引文件是否存在
