@@ -1,6 +1,6 @@
 
 
-### RAGAS评估指标
+### 一、RAGAS评估指标
 #### 1. 检索指标
 - Context Recall
 - Context Precision
@@ -26,7 +26,7 @@ $$ f1_score = 2 * \frac{准确率 * 召回率}{准确率 + 召回率}$$
 > - 如果上下文不完整（低 Context Recall），生成器可能因缺乏信息而无法给出完整或准确的答案（影响 Answer Relevancy），甚至可能被迫“猜测”（影响 Faithfulness）。  
 > - 如果上下文充满噪声（低 Context Precision），生成器可能难以聚焦关键信息，导致答案冗余、偏题（影响 Answer Relevancy），或错误地依据了不相关信息（影响 Faithfulness）。
 
-### 分阶段优化策略
+### 二、分阶段优化策略
 - 第一阶段：优化检索器，提升 `Context Recall` 和 `Context Precision`
 - 第二阶段：优化生成器，提升 `Faithfulness` 和 `Answer Relevance`
 
