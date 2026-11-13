@@ -26,6 +26,7 @@ print(df_complex)
 # 将样例数据中的DataFrame转换为JSON格式
 df_complex_json = df_complex.to_json(orient='split')
 print(df_complex_json)
+
 # 编写函数功能
 def calculate_total_age_from_split_json(input_json):
     """
