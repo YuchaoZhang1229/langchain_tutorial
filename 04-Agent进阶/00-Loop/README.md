@@ -11,7 +11,7 @@ Agent Loop 是 `思考→行动→观察→再思考` 的循环机制，这个�
 | **行动** Acting    | 判断有无 `tool_calls`，要么调工具，要么给最终答案 | `AIMessage.tool_calls` / `AIMessage.content`     | 条件边 `add_conditional_edges("llm", tools_condition)`-> `tools` 节点 / `END` |
 | **观察** Observing | 执行工具并更新会话历史                | `ToolNode` → `ToolMessage` 追加           | tools 节点（由 `ToolNode` 构造）+ `add_edge("tools", "llm")` 回边                    |
 
-<img alt="img.png" src="image/agent_loop.png" width="800"/>
+<img alt="img.png" src="image/agent_loop.png" width=800/>
 
 #### LangChain（create_agent）
 ```python
