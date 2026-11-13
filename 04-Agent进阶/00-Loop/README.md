@@ -5,10 +5,10 @@
 Agent Loop 是 `思考→行动→观察→再思考` 的循环机制，这个闭环会不断循环，直到任务完成或触发终止条件
 
 
-| 阶段               | 人话                              | 代码对象                                             | 对应 LangGraph                                                            |
-|------------------|---------------------------------|--------------------------------------------------|-------------------------------------------------------------------------|
-| **思考** Thinking  | LLM根据当前状态推理，决定下一步做什么            | `state["messages"]` 和 `reasoning` content block） | `llm` 节点                                                                |
-| **行动** Acting    | 判断有无 `tool_calls`，要么调工具，要么给最终答案 | `AIMessage.tool_calls` / `AIMessage.content`     | 条件边 `add_conditional_edges("llm", tools_condition)`-> `tools` 节点 / `END` |
+| 阶段               | 人话                              | 代码对象                                            | 对应 LangGraph                                                            |
+|------------------|---------------------------------|-------------------------------------------------|-------------------------------------------------------------------------|
+| **思考** Thinking  | LLM根据当前状态推理，决定下一步做什么            | `state["messages"]` 和 `reasoning` content block | `llm` 节点                                                                |
+| **行动** Acting    | 判断有无 `tool_calls`，要么调工具，要么给最终答案 | `AIMessage.tool_calls` / `AIMessage.content`    | 条件边 `add_conditional_edges("llm", tools_condition)`-> `tools` 节点 / `END` |
 | **观察** Observing | 执行工具并更新会话历史                | `ToolNode` → `ToolMessage` 追加           | tools 节点（由 `ToolNode` 构造）+ `add_edge("tools", "llm")` 回边                    |
 
 <img alt="image/agent_loop.png" src="image/agent_loop.png" width=800>
