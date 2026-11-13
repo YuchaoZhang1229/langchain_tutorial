@@ -36,5 +36,14 @@ Agent = 大模型思考能力 + 规划能力 + 工具调用 + 迭代执行 + 记
 <img alt="img_4.png" src="image/L5 Graph Engineering.png" width=800/>
 
 ### 四、Function Calling 原理
+- **作用**：赋予大模型调用外部工具或外部API的能力
+- **参考**：https://api-docs.deepseek.com/zh-cn/guides/tool_calls
+- **流程**：
+  - ① 将用户提问和函数说明一起发给大模型
+  - ② 大模型返回具体调用函数和参数
+  - ③ 然后调用函数并将函数运行结果再发给大模型
+  - ④ 大模型在基于函数运行结果进行回答
 
 
+
+<img alt="img.png" src="Function Calling的调用流程 .png" width=800/>
