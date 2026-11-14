@@ -1,8 +1,7 @@
 """
 Self-Reflection: 深度思考 -> 生成初稿 -> 反思 -> 修正
 
-这个机制会额外调用token：
-- 简单的闲聊的场景 无需开启；
+- 这个机制会额外调用token，简单的闲聊的场景 无需开启；
 - 高准确率需求 -- 设置1-3轮的自省
 """
 
@@ -122,9 +121,10 @@ class ThinkingReflectionAgent:
 # ======================
 if __name__ == "__main__":
     agent = ThinkingReflectionAgent()
-
-    # 测试任务
-    task = "写一段50字以内的人工智能介绍，要求通俗易懂"
+    # 你可以换成任何任务：数学题、文案、代码、方案、推理题
+    # task = "15乘8加20等于多少？请写出计算过程"
+    task = "写一段50字以内的人工智能介绍"
+    # task = "检查这段代码有没有错误：print(15*8+20)"
     final_result = agent.run(task, max_rounds=3)
 
     print("\n最终输出：\n", final_result)
