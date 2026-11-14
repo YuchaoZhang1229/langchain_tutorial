@@ -1,3 +1,19 @@
+"""
+ReAct: 思考 -> 行动 -> 观察 的循环机制
+- 思考：模型分析用户问题
+- 行动：决定调用哪个工具，无工具调用则给出最终答案
+- 观察：工具执行结果，进入再思考
+- 循环：直到没有工具调用，给出最终答案
+
+应用场景：
+
+适用判断标准：
+1. 需要外部事实/调用工具；不需要的话，则普通问题或Cot就够用
+2. 步骤未知，不能事先列全；步骤已知，用 Plan-and-Execute
+3. 每一步高度依赖上一步的结果；不依赖，并行执行更适合
+4. 无不可逆的副作用，有副作用则加 HITL
+"""
+
 from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langchain.chat_models import init_chat_model
@@ -53,7 +69,7 @@ def run_langchain_react(user_input: str):
 
         # model节点产生的事件, 包含模型输出的消息
         if "model" in event:
-            print("================== model节点产生的事件, 包含模型输出的消息 ==================")
+            print("================== model节点产生的事件, 包含 message.content 和 message.tool_calls  ==================")
             step_count += 1
             message = event["model"]["messages"][0]  # AIMessage 对象
 
