@@ -1,5 +1,6 @@
 """
-结合了Function Calling功能与数据库操作，核心功能是将用户的中文问题自动转换为SQL查询并返回结构化结果。
+结合了Function Calling功能与数据库操作
+核心功能是将用户的中文问题自动转换为SQL查询并返回结构化结果。
 """
 import os
 import json
@@ -126,10 +127,9 @@ def ask_database(query):
         return f"SQL 执行错误: {e}"
 
 # ---------- 主流程 ----------
-prompt = "查询一班的学生数学成绩是多少？"
 messages = [
     {"role": "system", "content": "基于表回答用户问题"},
-    {"role": "user", "content": prompt}
+    {"role": "user", "content": "查询一班的学生数学成绩是多少？"}
 ]
 
 response = get_sql_completion(messages)
