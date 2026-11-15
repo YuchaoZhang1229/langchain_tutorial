@@ -34,7 +34,7 @@ Agent Loop 是 `思考→行动→观察→再思考` 的循环机制，这个�
 
 认知框架总结
 
-![img.png](image/认知框架总结.png)
+![img.png](../image/认知框架总结.png)
 
 
 
