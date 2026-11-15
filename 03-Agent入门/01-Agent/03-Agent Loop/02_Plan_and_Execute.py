@@ -1,7 +1,7 @@
 """
 plan and execute 需求：贷款申请自动审批
 - plan: 贷款表单数据校验 → 计算贷款最大额度 → 提交贷款申请三步
-- execute: 调用工具执行计划
+- execute: 调用工具按照顺序执行计划；累计每次观察结果
 - summary: 汇总执行结果，给出最终答案
 """
 import json
@@ -14,7 +14,7 @@ from langchain_core.tools import tool
 
 
 # ----------------------------
-# 1. 定义贷款审批工具
+# 1. 定义工具：供执行阶段逐步调用
 # ----------------------------
 @tool
 def validate_form(age: int, monthly_income: float, loan_amount: float) -> str:
@@ -158,8 +158,8 @@ class LoanApprovalAgent:
                 "结果：48000.0"
             )
         """
-        results: Dict[str, Any] = {}
-        logs: List[str] = []
+        results: Dict[str, Any] = {} # 存放每次执行结果
+        logs: List[str] = []         # 记录执行日记，最后交给大模型做总结
         print("=== 工具执行 ===")
         for step in plan.steps:
             params = _fill(step.params, results)
@@ -209,5 +209,5 @@ if __name__ == "__main__":
     agent = LoanApprovalAgent()
 
     print(agent.run("处理贷款申请：年龄28岁，月收入8000元，申请贷款50000元。"))
-    print(agent.run("处理贷款申请：年龄17岁，月收入8000元，申请贷款50000元。"))
+    # print(agent.run("处理贷款申请：年龄17岁，月收入8000元，申请贷款50000元。"))
     # print(agent.run("处理贷款申请：年龄18岁，月收入8000元，申请贷款1000000元。"))
