@@ -1,5 +1,9 @@
 """
-Self-Reflection: 深度思考 -> 生成初稿 -> 反思 -> 修正
+Thinking and Self-Reflection: 深度思考 -> 生成初稿 -> 反思 -> 修正
+- Thinking： 模型生成推理过程/初步答案/计划
+- Self-Reflection：评审模型检查输出，找出错误、遗漏、逻辑、幻觉等问题
+- Refine：根据反思重新生成答案。可多轮迭代
+
 
 - 这个机制会额外调用token，简单的闲聊的场景 无需开启；
 - 高准确率需求 -- 设置1-3轮的自省
@@ -72,6 +76,8 @@ class ThinkingReflectionAgent:
         thinking = self.thinking_chain.invoke({"task": task})
         print(f"   目标：{thinking.goal}")
         print(f"   步骤：{thinking.steps}")
+        print(f"   风险：{thinking.risks}")
+        print(f"   输出格式：{thinking.final_output_format}")
 
         # 2. Draft：生成初稿
         print("\n📝 [Draft] 生成初步答案...")
@@ -94,6 +100,7 @@ class ThinkingReflectionAgent:
             print(f"   是否正确：{reflection.is_correct}")
             if reflection.issues:
                 print(f"   发现问题：{reflection.issues}")
+                print(f"   修正建议：{reflection.suggestions}")
 
             # 如果没问题，提前结束
             if reflection.is_correct and not reflection.issues:
