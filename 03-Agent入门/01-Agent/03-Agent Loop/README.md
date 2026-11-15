@@ -32,7 +32,9 @@ Agent Loop 是 `思考→行动→观察→再思考` 的循环机制，这个�
 
 <img alt="img.png" src="../image/经典%20Agent%20Loop%20三个模式.png" width=800/>
 
+认知框架总结
 
+![img.png](image/认知框架总结.png)
 
 
 
