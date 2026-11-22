@@ -1,0 +1,21 @@
+# ============================================================
+# a2a-class-demo / python-a2a版 — 运行依赖
+# ============================================================
+# 与原版（官方 a2a SDK）最大的区别：
+#   原版：pip install -e ./a2a-python[http-server] + uvicorn
+#         → Starlette + uvicorn，ASGI，异步
+#   本版：python-a2a
+#         → Flask + werkzeug，WSGI，线程（依赖随 python-a2a 自动装上）
+#
+# 所以本版**不需要**手动装 uvicorn / starlette，也不需要用本地源码安装协议库。
+#
+# 环境（已在共享环境里装好，无需重复安装）：
+#   D:\llmsvirtulenv\a2a_customer
+# ── A2A 协议 SDK（本版的核心，替代官方 a2a-python）──
+# 提供 AgentCard / AgentSkill / A2AServer / A2AClient / AgentNetwork / run_server
+python-a2a
+
+# ── 大模型调用（DeepSeek，兼容 OpenAI SDK）──
+openai
+
+# 需要配置环境变量：DEEPSEEK_API_KEY
