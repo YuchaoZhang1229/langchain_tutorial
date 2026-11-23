@@ -1,19 +1,20 @@
 ## 一、Deep Agents 架构三大工具体系
 
-![三大工具体系.png](../image/三大工具体系.png)
+<img alt="三大工具体系.png" src="../image/三大工具体系.png"/>
 
 
 ### 1.1 内置工具
-![内置工具.png](../image/内置工具.png)
+
+<img alt="内置工具.png" src="../image/内置工具.png"/>
 
 ### 1.2 MCP工具接入实战
 
-![MCP工具接入实战.png](../image/MCP工具接入实战.png)
+<img alt="MCP工具接入实战.png" src="../image/MCP工具接入实战.png"/>
 
 ### 1.3 自定义工具
 
-
-![自定义工具.png](../image/自定义工具.png)
+<img alt="自定义工具.png" src="../image/自定义工具.png"/>
 
 ## 二、总结三类工具的落地原则
-![三类工具的落地原则.png](../image/三类工具的落地原则.png)
+
+<img alt="三类工具的落地原则.png" src="../image/三类工具的落地原则.png"/>
