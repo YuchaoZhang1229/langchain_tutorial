@@ -7,6 +7,15 @@
 
 <img alt="内置工具.png" src="../../image/内置工具.png"/>
 
+| 类别 | 工具 | 作用 |
+| :--- | :--- | :--- |
+| 规划 | `write_todos` | 任务分解/待办 |
+| 文件系统 | `ls` / `read_file` / `write_file` / `edit_file` / `glob` / `grep` | 读写虚拟文件系统 |
+| 子代理 | `task` | 派发子代理 |
+
+
+
+
 ### 1.2 MCP工具接入实战
 
 <img alt="MCP工具接入实战.png" src="../../image/MCP工具接入实战.png"/>
