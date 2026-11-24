@@ -3,6 +3,23 @@ Deep Agents 的核心理念可以概括为一句话：
 
 > 当任务复杂度超过单个 Agent 上下文窗口的承载能力时，用"显式规划"防止飘逸、用"子 Agent"隔离上下文、用"文件系统"卸载上下文
 
+Deep Agents 的核心设计逻辑：能力可复用、风险可控制、技能可插拔、架构可扩展
+- 业务技能层：Skills
+- 安全管控层：文件权限、工具白名单、沙箱边界、人工介入（HITL）
+- 底层能力层：工具能力、中间件、虚拟文件系统、LangGraph 运行时
+
+> **LangGraph 运行时**：State、checkpoint、Store、中断恢复、流式输出都来自 LangGraph<br>
+> **虚拟文件系统**：
+> - `BackendProtocol` 定义了 `ls/read/write/edit/grep/glob` 七个方法
+> - `backend`：实现 `BackendProtocol` 接口，提供文件系统功能
+> **中间件**：
+> - `TodoListMiddleware` → 提供 `write_todos`
+> - `FilesystemMiddleware` → 提供文件工具 + 大结果自动驱逐
+> - `SubAgentMiddleware` → 提供 `task` 派生能力
+> - `SummarizationMiddleware` → 长对话摘要
+> - `AnthropicPromptCachingMiddleware` → 提示缓存
+> - `HumanInTheLoopMiddleware` → 审批中断
+
 ## 一、一句话理解
 **Deep Agents = ReAct Agent + 显式规划 + 子代理委派 + 虚拟文件系统 + 上下文管理 + LangGraph 运行时**
 
@@ -14,14 +31,11 @@ Deep Agents 的核心理念可以概括为一句话：
 Deep Agents 在这个循环外增加了一套“外骨骼”：
 ```text
 主代理
- ├─ 记忆：检索长期记忆（向量库/RAG、用户偏好、历史经验），任务结束后沉淀新记忆
  ├─ 规划：write_todos 维护任务清单
- ├─ 执行：调用工具，结构化 Schema、重试与回退
+ ├─ 执行：调用工具，重试与回退
  ├─ 委派：task 启动子代理，子代理独立上下文
  ├─ 外存：虚拟文件系统管理中间结果和任务状态
- ├─ 压缩：摘要旧消息、裁剪上下文、大输出转存
- ├─ 验证：Verifier/Critic 自检、测试/规则/Schema 校验、失败回退重试
- └─ 安全：沙箱执行、工具白名单/最小权限、Human-in-the-loop 审批、trace 审计、预算上限
+ └─ 安全：沙箱执行、工具白名单/最小权限、HITL 审批
 ```
 
 ![Deep Agents.png](image/Deep_Agents.png)
@@ -41,24 +55,53 @@ Deep Agents 在这个循环外增加了一套“外骨骼”：
 ## 三、四大核心支柱
 Deep Agents 最核心的是四个能力：
 
-### ① Planning：显式任务规划
+### ① File System：虚拟文件系统
+#### 为什么需要虚拟文件系统？
+传统智能体把所有中间结果都塞进上下文中，导致上下文爆炸，要么截断丢失信息，要么成本飙升
+
+#### 虚拟文件系统有什么作用？
+- 给智能体提供一套可以操作文件的工具（`ls/read/write/edit/grep/glob`），让它自己管理"工作区"
+- 作用：
+  - 中间结果落盘：大输出写文件，需要时再读/搜，不全部塞进上下文
+  - 规划载体：用 `write_todos` 把待办列表存成文件，用 `read_file` 回看进度
+  - 子智能体共享文件系统：父子智能体共享文件系统，实现"隔离上下文，共享产物"的委托模式
+    - 父智能体把任务背景写入文件
+    - 子智能体在隔离的上下文里工作，但可以 `read_file` 读取背景、`write_file` 写入结果
+    - 子智能体完成后只把摘要返回给父智能体，完整产出留在文件里
+
+#### 后端抽象（`BackendProtocol`）
+| 后端 | 存储位置 | 生命周期 | 适用场景 |
+| :--- | :--- | :--- | :--- |
+| `StateBackend`（默认） | LangGraph agent state 内 | 单次线程/单次运行 | 默认，零配置，随对话结束而消失 |
+| `StoreBackend` | LangGraph Store | 跨线程持久 | 多会话长期记忆、跨会话共享文件 |
+| `FilesystemBackend` | 真实本地磁盘 | 持久 | 需要智能体操作真实项目文件 |
+| `CompositeBackend` | 组合多个后端 | 路由 | 按路径前缀路由，如 `/memories/` 走 Store，其余走 State |
+
+在 `StateBackend` 下，文件以 `TypedDict` 存在 agent state 的 `files` 字段里：
+```text
+class FileData(TypedDict):
+    content: list[str]      # 按行拆分的列表
+    created_at: str
+    modified_at: str
+```
+
+#### 虚拟文件系统中间件：`FilesystemMiddleware`
+上下文管理：把工具结果卸载到文件系统中
+- 当单个工具返回结果的 token 数超过阈值时（配置项 `tool_token_limit_before_evict`，默认约 20,000 token）
+- 中间件**自动把完整结果写入虚拟文件**（如 `/large_tool_results/<id>.txt`）
+- 在对话上下文中，把原始结果**替换为一段引用**：告知模型"结果过大，已保存到 X 文件，请用 read_file/grep 查看相关部分
+
+### ② Planning：显式任务规划
 - 内置 todo/planning 工具，让主代理写任务清单、更新状态。
 - 作用：任务分解、进度跟踪、防止长任务跑偏。
 - 注意：todo 是“状态跟踪”，不是 DAG 工作流引擎；是否规划由模型自主决定。
 
-### ② Subagents：子代理
+### ③ Subagents：子代理
 - 主代理通过 `task` 类工具把子任务委派给专用子代理。
 - 子代理有独立提示、工具、模型和上下文。
 - 子代理执行完通常只把摘要/结果返回主代理，避免污染主上下文。
 - 适合：资料检索、代码审查、数据分析、专项调研。
 - 原则：子代理要有清晰 `name`、`description`、`prompt`、工具边界；不是越多越好。
-
-### ③ File System：虚拟文件系统
-- 内置文件工具族：读写、编辑、列目录、搜索等。
-- 核心作用是 **上下文卸载（context offloading）**：大输出写文件，需要时再读/搜，不全部塞进上下文。
-- 可作外部记忆、笔记、中间产物、跨轮持久化。
-- 后端可抽象：内存/State、真实文件系统、Store 长期存储、组合后端。
-- 安全注意：路径穿越、权限、沙箱、清理策略。
 
 ### ④ Detailed System Prompt：详细系统提示
 - 内置提示会指导模型：何时规划、何时委派、如何使用文件、如何输出、何时停止。
